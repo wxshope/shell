@@ -60,6 +60,7 @@ function UPdata() {
 if [ X$1 = "Xinstall" ]; then
   echo "開始部署 damominer 程序"
    Install
+   systemctl restart supervisor
    echo -e "部署完成"
    exit  0
 elif [ X$1 = "Xupdata" ]; then
