@@ -63,7 +63,7 @@ if [ X$1 = "Xinstall" ]; then
    systemctl restart supervisor
    echo -e "部署完成"
    exit  0
-elif [ X$1 = "Xupdata" ]; then
+elif [ X$1 = "Xupdate" ]; then
   echo "開始更新 damominer 程序"
   UPdata
   echo -e "完成更新"
