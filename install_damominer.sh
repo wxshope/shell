@@ -12,7 +12,7 @@ function version() {
 
 
 function Install() {
-   sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl clang build-essential hwloc libhwloc-dev wget -y && sudo apt upgrade -y
+   sudo apt install mesa-opencl-icd ocl-icd-opencl-dev gcc git bzr jq pkg-config curl supervisor  clang build-essential hwloc libhwloc-dev wget -y && sudo apt upgrade -y
   if [ -f ${FILEPATH}/damominer ]; then
     echo "已经安装过锄头"
   else
