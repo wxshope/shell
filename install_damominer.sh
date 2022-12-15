@@ -2,7 +2,7 @@
 
 export FILEPATH="/root/dev/snarkos"
 export CONF="/etc/supervisor/conf.d/"
-echo "判断是否安装锄头"
+export INFO="[${Green}Info${Font}]"
 
 function version() {
     if [ ! -d ${FILEPATH} ]; then
@@ -32,6 +32,8 @@ function Install() {
       rm README.md
       rm md5res
       rm run_gpu.sh
+      SHELL_NEW_VERSION=$(echo ${VERSION} | awk -Fv '{print $2}')
+      echo ${SHELL_NEW_VERSION} >${FILEPATH}/version.txt
     fi
 
     if [ ! -f ${FILEPATH}/run-damominer.sh ]; then
