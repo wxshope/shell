@@ -24,6 +24,7 @@ function Install() {
       wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
       tar -xvf damominer_linux_${VERSION}.tar
       chmod a+x ${FILEPATH}/damominer
+      rm damominer_linux_${VERSION}.tar
     fi
 
     if [ ! -f ${FILEPATH}/run-damominer.sh ]; then
@@ -55,6 +56,7 @@ function UPdata() {
   tar -xvf damominer_linux_${VERSION}.tar
   chmod a+x ${FILEPATH}/damominer
   supervisorctl restart damominer
+  rm damominer_linux_${VERSION}.tar
 }
 
 if [ X$1 = "Xinstall" ]; then
