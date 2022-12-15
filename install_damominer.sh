@@ -10,7 +10,7 @@ function version() {
     fi
   VERSION=$(curl -k -sL https://proxy.jeongen.com/https://api.github.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
   echo "VERSION=${VERSION}"
-  SHELL_VERSION=$(cat version.txt)
+  SHELL_VERSION=$(cat ${FILEPATH}/version.txt)
 }
 
 function Install() {
@@ -68,7 +68,7 @@ function UPdata() {
     rm README.md
     rm md5res
     rm run_gpu.sh
-    echo ${VERSION} > version.txt
+    echo ${VERSION} > ${FILEPATH}/version.txt
   else
     echo -e "${INFO} 当前已是最新版本[ ${SHELL_NEW_VERSION} ]!"
   fi
