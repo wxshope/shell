@@ -68,7 +68,7 @@ function UPdata() {
     rm README.md
     rm md5res
     rm run_gpu.sh
-    echo ${VERSION} > ${FILEPATH}/version.txt
+    echo ${SHELL_NEW_VERSION} > ${FILEPATH}/version.txt
   else
     echo -e "${INFO} 当前已是最新版本[ ${SHELL_NEW_VERSION} ]!"
   fi
