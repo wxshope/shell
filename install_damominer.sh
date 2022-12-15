@@ -19,6 +19,9 @@ function Install() {
     echo "已经安装过锄头"
   else
     version
+    if [ ! -d ${FILEPATH} ]; then
+      mkdir -pv ${FILEPATH}
+    fi
     echo "没有安装锄头,开始下载安装"
 
     if [ ! -f ${FILEPATH}/damominer_${VERSION}.tar ]; then
@@ -52,6 +55,9 @@ function Install() {
 
 function UPdata() {
   version
+  if [ ! -d ${FILEPATH} ]; then
+      mkdir -pv ${FILEPATH}
+  fi
   SHELL_NEW_VERSION=$(echo ${VERSION} | awk -Fv '{print $2}')
   if [[ ${SHELL_NEW_VERSION} != ${SHELL_VERSION} ]]; then
     wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
