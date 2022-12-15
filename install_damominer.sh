@@ -5,9 +5,9 @@ export CONF="/etc/supervisor/conf.d/"
 export INFO="[${Green}Info${Font}]"
 
 function version() {
-    if [ ! -d ${FILEPATH} ]; then
+   if [ ! -d ${FILEPATH} ]; then
       mkdir -pv ${FILEPATH}
-    fi
+   fi
   VERSION=$(curl -k -sL https://proxy.jeongen.com/https://api.github.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
   echo "VERSION=${VERSION}"
   SHELL_VERSION=$(cat ${FILEPATH}/version.txt)
@@ -45,12 +45,8 @@ function Install() {
       wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/wxshope/shell/raw/master/damominer.conf
       mv damominer.conf ${CONF}
     fi
-
-    chmod a+x ${FILEPATH}/damominer
-
     read -p "请输入您的钱包地址 > " wallet
     sleep 4
-
     sed -i "s/aleoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/$wallet/g" ${FILEPATH}/run-damominer.sh
   fi
 }
