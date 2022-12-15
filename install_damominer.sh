@@ -21,7 +21,7 @@ function Install() {
     mkdir -p ${FILEPATH}
     cd ${FILEPATH}
     if [ ! -f ${FILEPATH}/damominer_${VERSION}.tar ]; then
-      wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_$VERSION.tar
+      wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
       tar -xvf damominer_${VERSION}.tar
       chmod a+x ${FILEPATH}/damominer
     fi
