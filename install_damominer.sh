@@ -4,10 +4,41 @@ export FILEPATH="/root/dev/snarkos"
 export CONF="/etc/supervisor/conf.d/"
 export INFO="[${Green}Info${Font}]"
 
+function repair_openssl() {
+  OPENSSL_VERSION=$(openssl version)
+
+  # shellcheck disable=SC2076
+  if [[ $OPENSSL_VERSION =~ "1.1.1" ]]; then
+    echo -e "${INFO} OpenSSL 版本正常!"
+  else
+    echo -e "${INFO} 开始安装 OpenSSL 1.1.1..."
+    # 从 Impish builds 下载 openssl 二进制包
+
+      wget -N -t2 -T3 "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/openssl_1.1.1f-1ubuntu2.16_amd64.deb" -O openssl_1.1.1f-1ubuntu2.16_amd64.deb ||
+      wget -N -t2 -T3 "https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/openssl_1.1.1f-1ubuntu2.16_amd64.deb" -O openssl_1.1.1f-1ubuntu2.16_amd64.deb
+      wget -N -t2 -T3 "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb ||
+      wget -N -t2 -T3 "https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb
+      wget -N -t2 -T3 "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb ||
+      wget -N -t2 -T3 "https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb
+
+    # 安装下载的二进制包
+    dpkg -i libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb
+    dpkg -i libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb
+    dpkg -i openssl_1.1.1f-1ubuntu2.16_amd64.deb
+
+    # 清理下载的文件
+    rm openssl_1.1.1f-1ubuntu2.16_amd64.deb
+    rm libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb
+    rm libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb
+
+    echo -e "${INFO} 安装 OpenSSL 1.1.1 成功!"
+  fi
+}
+
 function version() {
-   if [ ! -d ${FILEPATH} ]; then
-      mkdir -pv ${FILEPATH}
-   fi
+  if [ ! -d ${FILEPATH} ]; then
+    mkdir -pv ${FILEPATH}
+  fi
   VERSION=$(curl -k -sL https://proxy.jeongen.com/https://api.github.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
   echo "VERSION=${VERSION}"
   SHELL_VERSION=$(cat ${FILEPATH}/version.txt)
@@ -19,11 +50,12 @@ function Install() {
     echo "已经安装过锄头"
   else
     version
+    echo "没有安装锄头,开始下载安装"
     if [ ! -d ${FILEPATH} ]; then
       mkdir -pv ${FILEPATH}
     fi
-    echo "没有安装锄头,开始下载安装"
-
+    cd ${FILEPATH}
+    repair_openssl
     if [ ! -f ${FILEPATH}/damominer_${VERSION}.tar ]; then
       wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
       tar -xvf damominer_linux_${VERSION}.tar
@@ -45,8 +77,12 @@ function Install() {
       wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/wxshope/shell/raw/master/damominer.conf
       mv damominer.conf ${CONF}
     fi
+
+    chmod a+x ${FILEPATH}/damominer
+
     read -p "请输入您的钱包地址 > " wallet
     sleep 4
+
     sed -i "s/aleoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/$wallet/g" ${FILEPATH}/run-damominer.sh
   fi
 }
@@ -54,8 +90,10 @@ function Install() {
 function UPdata() {
   version
   if [ ! -d ${FILEPATH} ]; then
-      mkdir -pv ${FILEPATH}
+    mkdir -pv ${FILEPATH}
   fi
+  cd ${FILEPATH}
+  repair_openssl
   SHELL_NEW_VERSION=$(echo ${VERSION} | awk -Fv '{print $2}')
   if [[ ${SHELL_NEW_VERSION} != ${SHELL_VERSION} ]]; then
     wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
@@ -66,7 +104,7 @@ function UPdata() {
     rm README.md
     rm md5res
     rm run_gpu.sh
-    echo ${SHELL_NEW_VERSION} > ${FILEPATH}/version.txt
+    echo ${SHELL_NEW_VERSION} >${FILEPATH}/version.txt
   else
     echo -e "${INFO} 当前已是最新版本[ ${SHELL_NEW_VERSION} ]!"
   fi
