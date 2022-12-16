@@ -14,12 +14,12 @@ function repair_openssl() {
     echo -e "${INFO} 开始安装 OpenSSL 1.1.1..."
     # 从 Impish builds 下载 openssl 二进制包
 
-      wget -N -t2 -T3 "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/openssl_1.1.1f-1ubuntu2.16_amd64.deb" -O openssl_1.1.1f-1ubuntu2.16_amd64.deb ||
-      wget -N -t2 -T3 "https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/openssl_1.1.1f-1ubuntu2.16_amd64.deb" -O openssl_1.1.1f-1ubuntu2.16_amd64.deb
-      wget -N -t2 -T3 "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb ||
-      wget -N -t2 -T3 "https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb
-      wget -N -t2 -T3 "http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb ||
-      wget -N -t2 -T3 "https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb" -O libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate http://security.ubuntu.com/ubuntu/pool/main/o/openssl/openssl_1.1.1f-1ubuntu2.16_amd64.deb      -O openssl_1.1.1f-1ubuntu2.16_amd64.deb ||
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/openssl_1.1.1f-1ubuntu2.16_amd64.deb     -O openssl_1.1.1f-1ubuntu2.16_amd64.deb
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb   -O libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb ||
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb  -O libssl-dev_1.1.1f-1ubuntu2.16_amd64.deb
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate http://security.ubuntu.com/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb    -O libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb ||
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://mirrors.ustc.edu.cn/ubuntu/pool/main/o/openssl/libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb   -O libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb
 
     # 安装下载的二进制包
     dpkg -i libssl1.1_1.1.1f-1ubuntu2.16_amd64.deb
