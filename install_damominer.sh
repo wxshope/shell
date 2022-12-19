@@ -84,6 +84,9 @@ function Install() {
     sleep 4
 
     sed -i "s/aleoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/$wallet/g" ${FILEPATH}/run-damominer.sh
+    sleep 4 
+    read -rp "(默认: asiahk.damominer.hk:9090):" URL
+    sed -i "s/aleo1.damominer.hk:9090/$URL/g" ${FILEPATH}/run-damominer.sh
   fi
 }
 
