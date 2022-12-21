@@ -81,10 +81,10 @@ function Install() {
     chmod a+x ${FILEPATH}/damominer
 
     read -p "请输入您的钱包地址 > " wallet
-    sleep 4
+    sleep 1
 
     sed -i "s/aleoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/$wallet/g" ${FILEPATH}/run-damominer.sh
-    sleep 4 
+    sleep 1 
     read -rp "(默认: asiahk.damominer.hk:9090):" URL
     sed -i "s/aleo1.damominer.hk:9090/$URL/g" ${FILEPATH}/run-damominer.sh
   fi
