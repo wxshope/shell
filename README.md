@@ -2,7 +2,7 @@
 
 # 安裝脚本 
 ```shell
-wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://proxy.jeongen.com/https://github.com/wxshope/shell/raw/master/install_damominer.sh
+wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate https://ghproxy.com/https://github.com/wxshope/shell/raw/master/install_damominer.sh
 ```
 # 设置执行权限
 ```
