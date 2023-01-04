@@ -40,7 +40,7 @@ function version() {
   if [ ! -d ${FILEPATH} ]; then
     mkdir -pv ${FILEPATH}
   fi
-  VERSION=$(curl -k -sL ${PROXY}/https://gh-api.p3terx.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
+  VERSION=$(curl -k -sL https://gh-api.p3terx.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
   echo "VERSION=${VERSION}"
   SHELL_VERSION=$(cat ${FILEPATH}/version.txt)
 }
