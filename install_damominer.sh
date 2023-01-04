@@ -4,6 +4,7 @@ export FILEPATH="/root/dev/snarkos"
 export CONF="/etc/supervisor/conf.d/"
 export INFO="[${Green}Info${Font}]"
 export PROXY="https://ghproxy.com"
+
 function repair_openssl() {
   OPENSSL_VERSION=$(openssl version)
 
@@ -39,7 +40,7 @@ function version() {
   if [ ! -d ${FILEPATH} ]; then
     mkdir -pv ${FILEPATH}
   fi
-  VERSION=$(curl -k -sL ${PROXY}/https://api.github.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
+  VERSION=$(curl -k -sL ${PROXY}/https://gh-api.p3terx.com/repos/damomine/aleominer/releases | jq -r ".[0].tag_name")
   echo "VERSION=${VERSION}"
   SHELL_VERSION=$(cat ${FILEPATH}/version.txt)
 }
@@ -57,7 +58,7 @@ function Install() {
     cd ${FILEPATH}
     repair_openssl
     if [ ! -f ${FILEPATH}/damominer_${VERSION}.tar ]; then
-      wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate ${PROXY}/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
+      wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate ${PROXY}/https://github.com/damomine/aleominer/releases/download/${VERSION}/damominer_linux_${VERSION}.tar
       tar -xvf damominer_linux_${VERSION}.tar
       chmod a+x ${FILEPATH}/damominer
       rm damominer_linux_${VERSION}.tar
@@ -81,10 +82,10 @@ function Install() {
     chmod a+x ${FILEPATH}/damominer
 
     read -p "请输入您的钱包地址 > " wallet
-    sleep 1
+    sleep 4
 
     sed -i "s/aleoxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx/$wallet/g" ${FILEPATH}/run-damominer.sh
-    sleep 1 
+    sleep 4 
     read -rp "(默认: asiahk.damominer.hk:9090):" URL
     sed -i "s/aleo1.damominer.hk:9090/$URL/g" ${FILEPATH}/run-damominer.sh
   fi
@@ -99,7 +100,7 @@ function UPdata() {
   repair_openssl
   SHELL_NEW_VERSION=$(echo ${VERSION} | awk -Fv '{print $2}')
   if [[ ${SHELL_NEW_VERSION} != ${SHELL_VERSION} ]]; then
-    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate ${PROXY}/https://github.com/damomine/aleominer/releases/download/$VERSION/damominer_linux_$VERSION.tar
+    wget --limit-rate=10M -4 --tries=6 -c --no-check-certificate ${PROXY}/https://github.com/damomine/aleominer/releases/download/${VERSION}/damominer_linux_$VERSION.tar
     tar -xvf damominer_linux_${VERSION}.tar
     chmod a+x ${FILEPATH}/damominer
     supervisorctl restart damominer
